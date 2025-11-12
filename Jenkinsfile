@@ -19,10 +19,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Deployment to production completed successfully!'
+            echo 'Deployment to production completed successfully!'
         }
         failure {
-            echo '❌ Deployment failed!'
+            echo 'Deployment failed!'
         }
     }
 }
