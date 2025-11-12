@@ -4,14 +4,19 @@ pipeline {
     stages {
         stage('Deploy to Production') {
             steps {
-                echo "Deploying latest index.html to Nginx web root..."
-                sh '''
-                    # Copy new HTML into Nginx directory
-                    sudo cp index.html /usr/share/nginx/html/index.html
+                echo "Deploying to Production Server..."
 
-                    # Optional: verify deployment
-                    echo "Current deployed version:"
-                    head -n 3 /usr/share/nginx/html/index.html
+                sh '''
+                    # Define deployment directory
+                    DEPLOY_PATH="/usr/share/nginx/html"
+
+                    if [ -d "$DEPLOY_PATH" ]; then
+                        sudo cp index.html $DEPLOY_PATH/index.html
+                        echo "Deployment completed successfully."
+                    else
+                        echo "Error: Deployment path $DEPLOY_PATH does not exist."
+                        exit 1
+                    fi
                 '''
             }
         }
@@ -19,7 +24,7 @@ pipeline {
 
     post {
         success {
-            echo 'Deployment to production completed successfully!'
+            echo 'Deployment to production completed!'
         }
         failure {
             echo 'Deployment failed!'
